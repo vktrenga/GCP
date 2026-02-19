@@ -1,6 +1,4 @@
-Here is your complete **README-ready** section. You can copy and paste directly into your `README.md`.
 
----
 
 # Foundation Setup – Project & Billing
 
