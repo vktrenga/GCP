@@ -2,8 +2,8 @@
 
 ## Folder Documentation
 
-- [Foundation Setup](foundation-setup/GCP-Resource-Hierarchy.md)
-- [IAM Overview](iam/iam-readme.md)
+- [Foundation Setup](foundation-setup/)
+- [IAM Overview](iam/)
 
 ---
 
