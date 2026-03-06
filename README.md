@@ -4,6 +4,7 @@
 
 - [Foundation Setup](foundation-setup/)
 - [IAM Overview](iam/)
+- [Load Balancer](loadbalancer/)
 
 ---
 
