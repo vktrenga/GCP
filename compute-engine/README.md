@@ -395,79 +395,7 @@ Verify
 Open http://YOUR_EXTERNAL_IP
 You should see:
 ![alt text](basic/startup_script_result.png)
----
 
-### 💡 Why This Is Basic
-
-* Manual installation
-* No automation
-* No scaling
-* No resilience
-
----
-
-### ⚠ Architect Thinking
-
-Problems:
-
-* If VM crashes → app down
-* If traffic increases → no scaling
-* Manual configuration = not repeatable
-
----
-
----
-
-## 🔹 Task 2: Add a Separate DB VM
-
-### 📌 Scenario
-
-Now the application needs PostgreSQL database.
-
-Security team says:
-
-> DB must not be publicly accessible.
-
----
-
-### 🎯 Requirements
-
-* Create second VM
-* Install PostgreSQL
-* Remove external IP
-* Allow only internal traffic from App VM
-
----
-
-### 🏗 Architecture
-
-```
-Internet
-   ↓
-App VM (Public IP)
-   ↓
-DB VM (Private IP only)
-```
-
----
-
-### 💡 Why Important
-
-Architect rule:
-
-> Database should never have public IP in production.
-
----
-
-### 🔎 What Examiner Looks For
-
-✔ Internal IP communication
-✔ Firewall rule restricted to app VM
-✔ Principle of least privilege
-
----
-
----
 # LEVEL 3 — INTERMEDIATE (Template + MIG + Load Balancing)
 
 ## Scenario
