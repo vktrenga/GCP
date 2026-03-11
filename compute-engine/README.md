@@ -1,4 +1,8 @@
 
+<div align="center">
+   <img src="basic/machine_region_zone.png" width="400" alt="GCE Region & Zone" />
+</div>
+
 # Google Compute Engine (GCE)
 
 ## 📌 What is Compute Engine?
@@ -280,40 +284,33 @@ Configure the VM:
 
 Name: fual-finder
 
+
 Region/Zone: Choose your preferred location (asia-south1-a (Mumbai))
-![alt text](basic/machine_region_zone.png)
+<img src="basic/machine_region_zone.png" width="400" alt="Region & Zone" />
 
 Machine Type: e2-micro (Free tier eligible)
-
-![alt text](basic/machine_type.png)
+<img src="basic/machine_type.png" width="400" alt="Machine Type" />
 Boot Disk:
-
 Click Change
-
 Select Ubuntu 22.04 LTS
-
 Size: 10 GB (default is fine)
-
-![alt text](basic/operationing_system.png)
+<img src="basic/operationing_system.png" width="400" alt="OS Selection" />
 
 Under Firewall, check:
-
 ✅ Allow HTTP traffic
-
 (Optional) ✅ Allow HTTPS traffic
-
 Click Create
-![alt text](basic/networking.png)
+<img src="basic/networking.png" width="400" alt="Networking" />
 ⏳ Wait for the VM to start.
 
 🔹 Step 2: Connect to the VM
 
-Once the VM status shows Running:
-![alt text](basic/vm_list.png)
 
-Click SSH next to your VM instance & Connect 
+Once the VM status shows **Running**:
+<img src="basic/vm_list.png" width="400" alt="VM List" />
 
-![alt text](basic/connect_by_ssh.png)
+Click **SSH** next to your VM instance to connect.
+<img src="basic/connect_by_ssh.png" width="400" alt="SSH Connect" />
 
 🔹 Step 3: Update the System
 
@@ -357,15 +354,13 @@ Create index.html
 ```base
    sudo nano index.html
 ```
-Add Below content and Save
 
- ![alt text](basic/index_created.png)
+Add Below content and Save
+<img src="basic/index_created.png" width="400" alt="Index Created" />
 
 Open http://YOUR_EXTERNAL_IP
-
 You can see like below
-
-![alt text](basic/hello_world.png)
+<img src="basic/hello_world.png" width="400" alt="Hello World" />
 
 
 
@@ -386,14 +381,16 @@ systemctl enable nginx
 echo "<h1>VM Created with Startup Script</h1>" > /var/www/html/index.html
 ```
 
-![alt text](basic/start_script.png)
+
+<img src="basic/start_script.png" width="400" alt="Startup Script" />
 
 Click Create
 
 Verify 
 Open http://YOUR_EXTERNAL_IP
 You should see:
-![alt text](basic/startup_script_result.png)
+
+<img src="basic/startup_script_result.png" width="400" alt="Startup Script Result" />
 
 # LEVEL 3 — INTERMEDIATE (Template + MIG + Load Balancing)
 
@@ -425,7 +422,8 @@ You need:
    - Firewall: Allow HTTP traffic
    - Startup script example: (This will show which VM handled the request)
 4. Click **Create**
-![alt text](basic/template.png)
+
+<img src="basic/template.png" width="400" alt="Instance Template" />
 
 ### 2. Create a Managed Instance Group (MIG)
 1. Go to **Compute Engine → Instance Groups**
@@ -439,9 +437,10 @@ You need:
    - Maximum instances: 4
    - Target CPU utilization: 60%
 5. Click **Create**
-![alt text](basic/instance_group1.png)
-![alt text](basic/instance_group1.png)
-![alt text](basic/instance_group_2.png)
+
+<img src="basic/instance_group1.png" width="400" alt="Instance Group 1" />
+<img src="basic/instance_group1.png" width="400" alt="Instance Group 1" />
+<img src="basic/instance_group_2.png" width="400" alt="Instance Group 2" />
 Now GCP automatically manages multiple VMs.
 
 ### 3. Create a Health Check
@@ -464,8 +463,9 @@ Now GCP automatically manages multiple VMs.
    - Add Managed Instance Group
    - Select the health check created earlier
 5. Click **Create**
-![alt text](basic/loadbalancing.png) 
-![alt text](basic/loadbalancing2.png)
+
+<img src="basic/loadbalancing.png" width="400" alt="Load Balancing" />
+<img src="basic/loadbalancing2.png" width="400" alt="Load Balancing 2" />
 ### 5. Configure URL Map
 - The URL Map decides how traffic is routed.
 - Example: `/` → Backend service
@@ -490,9 +490,10 @@ After deployment:
    - Server: instance-xyz
 5. This confirms traffic is distributed across instances.
 
-![alt text](basic/vm1.png) 
-![alt text](basic/vm2.png) 
-![alt text](basic/vm3.png)
+
+<img src="basic/vm1.png" width="300" alt="VM1" />
+<img src="basic/vm2.png" width="300" alt="VM2" />
+<img src="basic/vm3.png" width="300" alt="VM3" />
 
 ## Final Architecture
 
@@ -589,7 +590,8 @@ IAM & Admin → Service Accounts
 ```
 CREATE SERVICE ACCOUNT
 ```
-![alt text](basic/service_account.png)
+
+<img src="basic/service_account.png" width="400" alt="Service Account" />
 
 4. Bind Role to Service Account
 ```
@@ -597,7 +599,8 @@ Compute Admin
 Storage Admin
 Service Account User
 ```
-![alt text](basic/service_account_permission.png)
+
+<img src="basic/service_account_permission.png" width="400" alt="Service Account Permission" />
 
 Now your service account exists:
 
@@ -611,7 +614,8 @@ IAM → Workload Identity Federation
 Click Create Pool
 Pool Name: {{Pool Name}}
 ```
-![alt text](basic/workload.png)
+
+<img src="basic/workload.png" width="400" alt="Workload Identity Federation" />
 
 
 Add Provider:
@@ -629,7 +633,8 @@ google.subject=assertion.sub
 attribute.actor=assertion.actor
 attribute.repository=assertion.repository
 ```
-![alt text](basic/provider.png)
+
+<img src="basic/provider.png" width="400" alt="Provider" />
 
 ### 3. Allow Identity to Use Service Account
 Go to:
@@ -648,7 +653,8 @@ Example:
 principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/USERNAME/REPO
 ```
 
-![alt text](basic/grand_access_service_account.png)
+
+<img src="basic/grand_access_service_account.png" width="400" alt="Grant Access Service Account" />
 
 ### 4. Create GitHub Action Workflow
 
@@ -658,7 +664,8 @@ Create file at your code base
 ```
 Add workload_identity_provider
 Add service_account
-![alt text](image.png)
+
+<img src="image.png" width="400" alt="GitHub Action Workflow" />
 
 
 CI & CD Pipe Line Setup
@@ -668,7 +675,8 @@ CI & CD Pipe Line Setup
 -> Push the code & Check Deployment
 
 
-![alt text](basic/image.png)
+
+<img src="basic/image.png" width="400" alt="CI/CD Pipeline" />
 
 > Note: Instead of defining workload_identity_provider and service_account directly in the workflow file, store them securely in GitHub Secrets Manager and reference them from there.
 
@@ -702,7 +710,8 @@ You need:
 1. Go to **APIs & Services → Library**
 2. Search & Open **Artifact Registry API** 
 3. Click Enable Button
-![alt text](basic/docker/artifact_enable.png)
+
+<img src="basic/docker/artifact_enable.png" width="400" alt="Artifact Registry Enable" />
 Do the same approch other services whic h are needs
 
 ### Create Artifact Registry
@@ -715,11 +724,14 @@ Do the same approch other services whic h are needs
    - Mode : Standard
    - Keep other options as default (Immutable image tags, Cleanup policies,Vulnerability scanning) If you need changes do as per your requirement 
 4. Click Create Button
-![alt text](basic/docker/artifact_registory.png) 
+
+<img src="basic/docker/artifact_registory.png" width="400" alt="Artifact Registry" />
 5. Copy the URL 
-![alt text](image-1.png)
+
+<img src="image-1.png" width="400" alt="Artifact Registry URL" />
 Example : us-central1-docker.pkg.dev/first-rank-coders/mig-docker-github-fastapi
-![alt text](basic/docker/create_artifact.png)
+
+<img src="basic/docker/create_artifact.png" width="400" alt="Create Artifact" />
 ### Create Service Account and Bind Role
   > Follow the same approch of previous scenaria's Step 1
   Roles:
@@ -734,7 +746,8 @@ Example : us-central1-docker.pkg.dev/first-rank-coders/mig-docker-github-fastapi
 
 ### Allow Identity to Use Service Account 
    > Follow the same approch of previous scenaria's Step 2
-![alt text](<basic/docker/grand permissoin_service_account.png>)
+
+<img src="basic/docker/grand permissoin_service_account.png" width="400" alt="Grant Permission Service Account" />
 
 ### Create Instance Template  
    > Follow the same approch of previous scenaria's Step 1 but remove the startup script because we will use docker to run our application use Start Up like bellow 
@@ -781,8 +794,10 @@ Notes : Before Create a Fast API application and push it in Github with workflow
    https://github.com/vktrenga/gcp-learning-projects/tree/main/fastapi-mig-ci-cd-docker
 
 You can see the docker images on Artifact Registory
-![alt text](basic/docker/artifact_registory.png)
+
+<img src="basic/docker/artifact_registory.png" width="400" alt="Artifact Registry" />
 
 You can check your application both Brower and curl
 
-![alt text](basic/docker/docker-status-terminal_result.png)
+
+<img src="basic/docker/docker-status-terminal_result.png" width="400" alt="Docker Status Terminal Result" />
