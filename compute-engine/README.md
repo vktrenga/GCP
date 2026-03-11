@@ -29,11 +29,17 @@ It is similar to AWS EC2 in concept.
 
 # 🚀 Key Features of Compute Engine
 
+
 ## 1️⃣ Virtual Machines (VMs)
 
 * Linux and Windows support
 * Predefined and custom machine types
 * GPU & high-memory instances
+
+**Why Virtual Machines?**
+
+VMs provide the foundation for running any workload in the cloud, offering flexibility to choose OS, hardware specs, and software stack. You can migrate legacy apps, run custom code, and control every aspect of your environment, making VMs ideal for diverse use cases from development to production.
+
 
 
 ## 2️⃣ Custom Machine Types
@@ -41,6 +47,10 @@ It is similar to AWS EC2 in concept.
 * Choose exact vCPU and RAM
 * Optimize cost
 * Avoid overprovisioning
+
+**Why Custom Machine Types?**
+
+Custom machine types let you tailor resources to your workload, avoiding unnecessary costs and maximizing performance. You can fine-tune CPU and memory for each VM, ensuring efficient use of cloud resources and better cost control.
 
 | Machine | Best For        | Cost   | Performance |
 | ------- | --------------- | ------ | ----------- |
@@ -50,6 +60,7 @@ It is similar to AWS EC2 in concept.
 
 ---
 
+
 ## 3️⃣ Persistent Storage
 
 * Standard persistent disk
@@ -57,7 +68,12 @@ It is similar to AWS EC2 in concept.
 * Local SSD (high performance)
 * Snapshots & backups
 
+**Why Persistent Storage?**
+
+Persistent Storage ensures your data survives VM restarts, failures, and scaling events. Unlike ephemeral disks, persistent disks are independent of VM lifecycle, making them ideal for databases, application state, and backups. You can easily resize, snapshot, and attach/detach persistent disks to different VMs, supporting high availability and disaster recovery.
+
 ---
+
 
 ## 4️⃣ Managed Instance Groups (MIG)
 
@@ -66,19 +82,32 @@ It is similar to AWS EC2 in concept.
 * Rolling updates
 * Multi-zone deployment
 
+**Why Managed Instance Groups?**
+
+MIGs automate the deployment, scaling, and management of identical VM instances. They ensure your application is always available by automatically replacing unhealthy VMs and scaling up/down based on demand. When combined with Load Balancing, MIGs allow seamless distribution of traffic across healthy instances, enabling high availability, fault tolerance, and zero-downtime updates.
+
+**Relationship to Load Balancing:**
+
+Load Balancing works best with MIGs, as it can dynamically route traffic to VMs managed by the group. MIGs provide the pool of instances, while Load Balancing ensures users are always directed to healthy, responsive servers. This combination is essential for scalable, resilient cloud architectures.
+
 ---
+
 
 ## 5️⃣ Load Balancing
 
-Using
-Cloud Load Balancing
+Using Cloud Load Balancing
 
 * Distributes traffic across instances
 * Global Anycast IP
 * SSL termination
 * Health checks
 
+**Why Load Balancing?**
+
+Load Balancing ensures high availability and scalability by distributing incoming traffic across multiple VM instances. It prevents any single server from being overwhelmed, provides automatic failover, and enables seamless scaling during traffic spikes. Health checks guarantee only healthy instances receive traffic, improving reliability.
+
 ---
+
 
 ## 6️⃣ Startup Scripts & Automation
 
@@ -86,7 +115,12 @@ Cloud Load Balancing
 * Infrastructure automation
 * Reproducible environments
 
+**Why Startup Scripts & Automation?**
+
+Startup scripts automate VM configuration, software installation, and environment setup during boot. This enables consistent, repeatable deployments, reduces manual errors, and supports infrastructure-as-code practices for scalable operations.
+
 ---
+
 
 ## 7️⃣ Custom Images
 
@@ -94,17 +128,26 @@ Cloud Load Balancing
 * Preconfigured application environments
 * Production-grade scaling
 
+**Why Custom Images?**
+
+Custom images allow you to pre-build VM environments with required software and configurations. This speeds up VM launches, ensures consistency across deployments, and simplifies scaling production workloads.
+
 ---
+
 
 ## 8️⃣ Security Features
 
 * IAM roles & service accounts
 * Shielded VMs
 * VPC firewall rules
-* Integration with
-  Cloud Armor for DDoS protection
+* Integration with Cloud Armor for DDoS protection
+
+**Why Security Features?**
+
+Security features protect your infrastructure from threats and unauthorized access. IAM roles and service accounts enforce least-privilege access, Shielded VMs defend against rootkits and boot-level attacks, VPC firewalls control network traffic, and Cloud Armor provides DDoS protection for mission-critical workloads.
 
 ---
+
 
 ## 9️⃣ Cost Optimization
 
@@ -112,6 +155,10 @@ Cloud Load Balancing
 * Committed use discounts
 * Spot VMs (low-cost compute)
 * Custom machine types
+
+**Why Cost Optimization?**
+
+Cost optimization features help you reduce cloud expenses without sacrificing performance. Sustained and committed use discounts reward long-term usage, Spot VMs offer low-cost compute for flexible workloads, and custom machine types prevent overprovisioning. Together, these tools maximize value for your cloud investment.
 
 ---
 
