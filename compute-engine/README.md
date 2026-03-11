@@ -264,7 +264,7 @@ Each level:
 
 ---
 
-# 🟢 LEVEL 1 — BASIC (Single VM Architecture)
+# LEVEL 1 — BASIC (Single VM Architecture)
 
 ## 🔹 Task 1: Create a VM and Setup Nginx (Manual Setup)
 
@@ -370,8 +370,7 @@ You can see like below
 
 
 ---
-# 🟢 LEVEL 2 — Intermidate (Create VM with Self Script)
----
+# LEVEL 2 — Intermidate (Create VM with Self Script)
 
 Follow the Same like Basic setup upto Firewall setup then 
 
@@ -411,8 +410,9 @@ You need:
 - **Managed Instance Groups (MIGs):** Automatically scale the number of VM instances based on traffic.
 - **Load Balancer:** Distributes user requests across those instances.
 - **Health Checks:** Ensure traffic goes only to healthy servers.
-
----
+- **GitHub Actions (CI/CD):** Automatically deploy application updates when developers push new code.
+- **Workload Identity Federation:**  Securely authenticates GitHub Actions with Google Cloud without storing service account keys.
+- **Rolling Updates:** Deploy new application versions gradually across instances without downtime.
 
 ## Steps
 
@@ -532,7 +532,257 @@ During a traffic spike:
 - Users experience no slowdown
 - When traffic normalizes, extra VMs are removed
 
-# 🟡 LEVEL 4 — INTERMEDIATE (Tempalte + MIG + Load Balancing + Github Action)
-# 🟡 LEVEL 5 — INTERMEDIATE (Tempalte + MIG + Load Balancing + Github Action + Docker)
+# LEVEL 4 — Advance (Template + MIG + Github Action)
+## Scenario
+
+Imagine you run a website. During normal traffic, a few servers are enough. But during festivals or sales events, traffic increases dramatically. At the same time, your development team frequently releases new features, bug fixes, and improvements to the FastAPI application.
+
+You need:
+- A solution that automatically adds more servers when traffic spikes and removes them when traffic goes back to normal (Managed Instance Groups - MIGs).
+- A solution that distributes incoming traffic across multiple servers so that no single server is overwhelmed (Load Balancing).
+- Health checks to ensure traffic is only sent to healthy servers. If a server becomes unhealthy, the load balancer stops sending traffic to it and redirects requests to healthy instances.  
+- A secure CI/CD pipeline that automatically deploys new FastAPI updates whenever developers push code (GitHub Actions).
+
+- A secure authentication mechanism between GitHub and Google Cloud without storing service account keys (Workload Identity Federation).
+
+- A rolling deployment strategy so application updates happen without downtime, ensuring users can continue using the website even during deployments.
+
+## Steps
+The infrastructure setup for Instance Template, Managed Instance Groups, Load Balancer, and Health Checks is the same as described in LEVEL 3.
+
+Refer to LEVEL 3 — Template + MIG + Load Balancing for the infrastructure configuration.
+
+> Note: Since this setup uses a FastAPI application, make sure to update or replace the startup script in the Instance Template
+
+Create A Fast API Application and push Github & use for startup script setpu
 
 
+```
+#!/bin/bash
+
+set -e
+
+apt-get update
+apt-get install -y git python3-pip python3-venv
+
+cd /opt
+
+git clone https://github.com/vktrenga/gcp-learning-projects.git
+
+cd gcp-learning-projects/fastapi-mig-ci-cd
+
+python3 -m venv venv
+
+venv/bin/pip install -r requirements.txt
+
+nohup venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+
+```
+
+### 1. Create Service Account and Bind Role
+1. Go to:
+2. Open Google Cloud Console
+```
+IAM & Admin → Service Accounts
+```
+3. Click
+```
+CREATE SERVICE ACCOUNT
+```
+![alt text](basic/service_account.png)
+
+4. Bind Role to Service Account
+```
+Compute Admin
+Storage Admin
+Service Account User
+```
+![alt text](basic/service_account_permission.png)
+
+Now your service account exists:
+
+
+
+### 2. Setup Workload Identity Federation
+Go to: 
+```
+IAM → Workload Identity Federation
+
+Click Create Pool
+Pool Name: {{Pool Name}}
+```
+![alt text](basic/workload.png)
+
+
+Add Provider:
+```
+Provider: {{provider Name}}
+Issuer URL:
+https://token.actions.githubusercontent.com
+
+```
+
+
+Attribute mapping:
+```
+google.subject=assertion.sub
+attribute.actor=assertion.actor
+attribute.repository=assertion.repository
+```
+![alt text](basic/provider.png)
+
+### 3. Allow Identity to Use Service Account
+Go to:
+```
+IAM & Admin → Service Accounts
+```
+Select your service account.
+
+Click:
+```
+PERMISSIONS → GRANT ACCESS
+```
+Add Your principal:
+Example:
+```
+principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/USERNAME/REPO
+```
+
+![alt text](basic/grand_access_service_account.png)
+
+### 4. Create GitHub Action Workflow
+
+Create file at your code base
+```
+.github/workflows/deploy.yml
+```
+Add workload_identity_provider
+Add service_account
+![alt text](image.png)
+
+
+CI & CD Pipe Line Setup
+-> Deploy new Instance Template
+-> Update Managed Instacne Group by New Instance Template
+-> Rolling update MIG 
+-> Push the code & Check Deployment
+
+
+![alt text](basic/image.png)
+
+> Note: Instead of defining workload_identity_provider and service_account directly in the workflow file, store them securely in GitHub Secrets Manager and reference them from there.
+
+# LEVEL 5 — Advance (Template + MIG + Load Balancing + Github Action + Docker)
+Imagine you run a website. During normal traffic, a few servers are enough. However, during festivals or sales events, traffic increases dramatically. At the same time, your development team frequently releases new features, bug fixes, and improvements to the FastAPI application across different environments such as Development (Dev), Staging, and Production.
+
+You need:
+   > We should follow same like above other services except docker
+   > The application is packaged using Docker, ensuring that the same environment runs across development, staging, and production servers.
+
+### How They Work Together
+
+   **Managed Instance Group (MIGs)**: Automatically scale the number of VM instances based on incoming traffic.
+
+   **Cloud Load Balancing:** Distributes user requests evenly across the available instances.
+
+   **Health Checks:** Continuously monitor VM instances and ensure traffic is sent only to healthy servers.
+
+   **GitHub Actions (CI/CD):** Automatically builds and deploys application updates when developers push new code.
+
+   **Workload Identity Federation:** Securely authenticates GitHub Actions with Google Cloud without storing service account keys.
+
+   **Rolling Updates:** Gradually deploy new application versions across instances to avoid downtime.
+
+   **Artifact Registry:** Stores the Docker images built during the CI/CD pipeline.
+
+   **Docker:** Packages the FastAPI application into containers for consistent deployment across environments.
+
+## Steps
+### Enable Required APIs
+1. Go to **APIs & Services → Library**
+2. Search & Open **Artifact Registry API** 
+3. Click Enable Button
+![alt text](basic/docker/artifact_enable.png)
+Do the same approch other services whic h are needs
+
+### Create Artifact Registry
+1. Go to **Artifact Registry→ Repositories**
+2. Click **Create Repository** 
+3. Configure:
+   - Name: `mig-docker-github-fastapi`
+   - Format: Docker
+   - Location: Same as your Compute Engine instances
+   - Mode : Standard
+   - Keep other options as default (Immutable image tags, Cleanup policies,Vulnerability scanning) If you need changes do as per your requirement 
+4. Click Create Button
+![alt text](basic/docker/artifact_registory.png) 
+5. Copy the URL 
+![alt text](image-1.png)
+Example : us-central1-docker.pkg.dev/first-rank-coders/mig-docker-github-fastapi
+![alt text](basic/docker/create_artifact.png)
+### Create Service Account and Bind Role
+  > Follow the same approch of previous scenaria's Step 1
+  Roles:
+   ```
+      Artifact Registry Writer
+      Compute Admin
+      Service Account User
+   ```
+
+### Setup Workload Identity Federation (GitHub → GCP)
+  > Follow the same approch of previous scenaria's Step 2
+
+### Allow Identity to Use Service Account 
+   > Follow the same approch of previous scenaria's Step 2
+![alt text](<basic/docker/grand permissoin_service_account.png>)
+
+### Create Instance Template  
+   > Follow the same approch of previous scenaria's Step 1 but remove the startup script because we will use docker to run our application use Start Up like bellow 
+
+   ```
+   #!/bin/bash
+
+# Wait for system to finish booting for booting
+sleep 30
+
+# Update packages
+apt-get update -y
+
+# Install Docker
+apt-get install -y docker.io
+
+# Start Docker
+systemctl daemon-reexec
+systemctl start docker
+systemctl enable docker
+
+# Wait until Docker is ready
+until docker info >/dev/null 2>&1; do
+  sleep 5
+done
+
+# Authenticate Docker to Artifact Registry
+gcloud auth configure-docker us-central1-docker.pkg.dev -q
+
+# Pull Docker image
+docker pull us-central1-docker.pkg.dev/first-rank-coders/mig-docker-github-fastapi/fastapi:latest
+
+# Run FastAPI container
+docker run -d -p 80:8000 \
+--name fastapi-container \
+--restart always \
+us-central1-docker.pkg.dev/first-rank-coders/mig-docker-github-fastapi/fastapi:latest
+
+   ```
+### Create Manage Instance Group & Health Check 
+   > Follow the same approch of previous scenaria's Step 2
+
+Notes : Before Create a Fast API application and push it in Github with workflow 
+   https://github.com/vktrenga/gcp-learning-projects/tree/main/fastapi-mig-ci-cd-docker
+
+You can see the docker images on Artifact Registory
+![alt text](basic/docker/artifact_registory.png)
+
+You can check your application both Brower and curl
+
+![alt text](basic/docker/docker-status-terminal_result.png)
