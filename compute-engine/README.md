@@ -1,7 +1,4 @@
 
-<div align="center">
-   <img src="basic/machine_region_zone.png" width="400" alt="GCE Region & Zone" />
-</div>
 
 # Google Compute Engine (GCE)
 
